@@ -1,16 +1,22 @@
 import { Link } from "react-router-dom";
 import "./Navbar.css";
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
   const islogged = localStorage.getItem("token");
+  const navigate = useNavigate();
   const handleCart = (e) => {
     if (!islogged) {
       e.preventDefault();
-      alert("Debes iniciar sesión para ver el carrito");
+      alert("Debes iniciar sesión para accedcer a esta sección");
     }
   };
-  const handleLogout = () => {
-    localStorage.removeItem("token");
+  const handleLogout = (e) => {
+    e.preventDefault();
+    if (islogged) {
+      localStorage.removeItem("token");
+    }
+    navigate("/login");
   };
   return (
     <nav className="navbar">
@@ -26,9 +32,16 @@ function Navbar() {
           </Link>
         </li>
         <li className="nav-item">
-          <Link to="/login" className="nav-link" 
-            onClick={islogged ? handleLogout : null}
+          <Link
+            to="/compras"
+            className="nav-link"
+            onClick={handleCart }
           >
+            Mis compras
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/login" className="nav-link" onClick={handleLogout}>
             {islogged ? "Cerrar Sesión" : "Iniciar Sesión"}
           </Link>
         </li>

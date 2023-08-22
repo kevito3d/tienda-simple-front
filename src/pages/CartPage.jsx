@@ -5,8 +5,10 @@ import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { host } from "../utils";
+import { useNavigate } from "react-router-dom";
 
 function CartPage() {
+  const navigate = useNavigate();
   const { state } = useCart();
   const { cartItems } = state;
 
@@ -37,6 +39,28 @@ function CartPage() {
     });
   }, []);
 
+  const handlecheckout =async () => {
+    const respuesta =await fetch(`${host}/api/sale/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({
+        cartItems: cartItems,
+        total: totalAmount,
+      }),
+    })
+    if (respuesta.ok) {
+      dispatch({ type: "CLEAR_CART" });
+      alert("Compra realizada con exito");
+    }
+    else if (respuesta.status === 403) {
+      localStorage.removeItem("token");
+      navigate("/login");
+    }
+  };
+
   const totalAmount = cartItems.reduce(
     (total, item) => total + item.product.price * item.quantity,
     0
@@ -53,9 +77,9 @@ function CartPage() {
             ))}
         </div>
         <div className="total-amount">
-          <Link to="/checkout" className="checkout-button">
+          <button className="checkout-button" onClick={handlecheckout}>
             Realizar Compra
-          </Link>
+          </button>
           <h3>Total: ${totalAmount.toFixed(2)}</h3>
         </div>
       </div>
