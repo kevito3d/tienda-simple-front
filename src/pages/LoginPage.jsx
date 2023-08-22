@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./Login.css"
+import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import { host } from "../utils";
 function LoginPage() {
@@ -18,28 +18,30 @@ function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const respuesta = await fetch(`${host}/api/user/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    });
-    if (respuesta.ok) {
+    
+      const respuesta = await fetch(`${host}/api/user/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
       const json = await respuesta.json();
-      localStorage.setItem("token", json.token);
-      navigate("/");
+      if (respuesta.ok) {
+        localStorage.setItem("token", json.token);
+        navigate("/");
+      } else {
+        //   Seterror("Usuario o contraseña incorrectos");
+        alert(json.message);
+      }
       
-    } else {
-    //   Seterror("Usuario o contraseña incorrectos");
-    }
   };
 
   return (
     <div className="login-container">
       <h2>Iniciar Sesión</h2>
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
+        <div className="form-groupa">
           <label htmlFor="username">Usuario</label>
           <input
             type="text"
@@ -48,7 +50,7 @@ function LoginPage() {
             onChange={handleUsernameChange}
           />
         </div>
-        <div className="form-group">
+        <div className="form-groupa">
           <label htmlFor="password">Contraseña</label>
           <input
             type="password"
@@ -60,9 +62,15 @@ function LoginPage() {
         <button type="submit">Iniciar Sesión</button>
       </form>
       {/* iniciar sin logearse */}
-      <button 
-      style={{marginTop: "20px"}}
-      onClick={() => navigate("/")}>Iniciar sin logearse</button>
+      <div className="other-buttons">
+        <button style={{ marginTop: "20px" }} onClick={() => navigate("/")}>
+          Iniciar sin logearse
+        </button>
+
+        <button style={{ marginTop: "20px" }} onClick={() => navigate("/registrarse")}>
+          registrarse
+        </button>
+      </div>
     </div>
   );
 }

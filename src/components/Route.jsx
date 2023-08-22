@@ -6,6 +6,7 @@ import LoginPage from "../pages/LoginPage";
 import ProductsPage from "../pages/ProductPage";
 import Navbar from "./Navbar";
 import CartPage from "../pages/CartPage";
+import RegisterPage from "../pages/RegisterPage";
 
 export default function Routes_() {
   const storage = localStorage.getItem("token");
@@ -21,6 +22,12 @@ export default function Routes_() {
             storage ? <Navigate to="/" /> : <LoginPage />
           }
         />
+        <Route
+          path="registrarse"
+          element={
+             <RegisterPage />
+          }
+        />
 
         <Route
           path="/"
@@ -33,7 +40,9 @@ export default function Routes_() {
           }
         />
         <Route path="carrito" element={<CartPage />} />
-        <Route path="*" element={<Navigate to="/" />} />
+
+        {/* 404 */}
+        <Route path="*" element={<h1>404 Not Found</h1>} />
 
 
       </Routes>
