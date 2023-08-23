@@ -1,6 +1,5 @@
 import Navbar from "../components/Navbar";
 import Product from "../components/Product";
-import { useCart } from "../context/CartContext";
 import { host } from "../utils";
 import "./ProductsPage.css"; // Estilos específicos de la página
 import { useEffect, useState } from "react";

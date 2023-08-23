@@ -6,13 +6,14 @@ import { useCart } from "../context/CartContext";
 function Product({ product }) {
   const islogged = localStorage.getItem("token");
   const { state, dispatch } = useCart();
+
+
   const handleAddToCart = (e) => {
     // Aquí podrías implementar la lógica para agregar el producto al carrito
     if (!islogged) {
       e.preventDefault();
       alert("Debes iniciar sesión para agregar al carrito");
     }
-    console.log({ quantity: 1, product });
     fetch(`${host}/api/cart`, {
       method: state.cartItems.find((item) => item.product.id === product.id) 
         ? "PUT"

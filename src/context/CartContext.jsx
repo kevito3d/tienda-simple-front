@@ -1,8 +1,4 @@
-import { useEffect } from "react";
 import { createContext, useContext, useReducer } from "react";
-import { host } from "../utils";
-import { Navigate } from "react-router-dom";
-
 // Crear el contexto
 const CartContext = createContext();
 
